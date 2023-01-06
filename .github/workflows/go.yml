@@ -5,31 +5,38 @@ name: Go
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 env:
   MECAB_VERSION: "0.996.6"
-  
-jobs:
+  IPADIC_VERSION: "2.7.0-20070801"
 
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ${{ github.workspace }}/mecab
+          key: ${{ runner.os }}-${{ env.MECAB_VERSION }}-${{ env.IPADIC_VERSION }}-${{ hashFiles('.github/*-linux.sh') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ env.MECAB_VERSION }}-${{ env.IPADIC_VERSION }}-
 
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.19
-    - name: install mecab
-      run: |
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+      - name: install mecab
+        run: |
           .github/install-mecab-linux.sh
 
-    - name: Build
-      run: go build -v ./...
+      - name: Build
+        run: go build -v ./...
 
-    - name: Test
-      run: |
-        export CGO_LDFLAGS="-L/opt/homebrew/Cellar/mecab/0.996/lib -lmecab -lstdc++" && \
-        go test -v ./...
+      - name: Test
+        run: |
+          export CGO_LDFLAGS="-L/opt/homebrew/Cellar/mecab/0.996/lib -lmecab -lstdc++" && \
+          go test -v ./...
