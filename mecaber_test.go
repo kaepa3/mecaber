@@ -6,7 +6,7 @@ import (
 )
 
 func TestNewing(t *testing.T) {
-	err, m := CreateNew()
+	err, m := CreateNew("")
 	if err != nil {
 		t.Error(err.Error())
 	}
