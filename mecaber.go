@@ -12,8 +12,9 @@ type Mecaber struct {
 	m *mecab.MeCab
 }
 
-func CreateNew() (error, *Mecaber) {
-	m, err := mecab.New("-Owakati")
+func CreateNew(opt ...string) (error, *Mecaber) {
+	o := append(opt, "-Owakati")
+	m, err := mecab.New(o...)
 	if err != nil {
 		return err, nil
 	}

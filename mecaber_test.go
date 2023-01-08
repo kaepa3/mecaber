@@ -14,8 +14,8 @@ func TestNewing(t *testing.T) {
 		t.Error("nil mecab")
 	}
 	done := make(chan struct{})
-	errCh, ch := m.ParseToNode("吾輩は猫である", done)
-
+	errCh, ch := m.ParseToNode("8月3日に放送された「中居正広の金曜日の スマイルたちへ」(TBS系)で、1日たった5分でぽっこりおなかを解消するというダイエット方法を紹 介。キンタロー。のダイエットにも密着。",
+		done)
 LOOP:
 	for {
 		select {
