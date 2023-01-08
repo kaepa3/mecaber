@@ -50,7 +50,7 @@ func (me *Mecaber) ParseToNode(text string, done chan struct{}) (<-chan error, <
 
 func send(n *mecab.Node, ch chan string) {
 	for {
-		ch <- fmt.Sprintf("%s %s\n", n.Surface(), n.Feature())
+		ch <- fmt.Sprintf("%s,%s", n.Surface(), n.Feature())
 		if n.Next() != nil {
 			break
 		}
